@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "include": [
+        "js/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
