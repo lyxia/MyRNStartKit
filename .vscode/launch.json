@@ -20,7 +20,8 @@
             "request": "launch",
             "platform": "ios",
             "sourceMaps": true,
-            "target": "iPhone 5s",
+            // "target": "iPhone 5s",
+            "target": "device",
             "outDir": "${workspaceRoot}/.vscode/.react"
         }
     ]

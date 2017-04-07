@@ -3,11 +3,14 @@ package com.myproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cn.reactnative.customkeyboard.RNCustomKeyboardPackage;
+import rcnk.RnckPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.myproject.rn.FOSKBoardPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +32,10 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage(),
+            new RNCustomKeyboardPackage(),
+//            new RnckPackage(),
+              new FOSKBoardPackage(),
             new CodePush("S83yokMPB5MHE7TgjYRgDEZh9W0CNkmCl90uM", getApplicationContext(), BuildConfig.DEBUG)
       );
     }

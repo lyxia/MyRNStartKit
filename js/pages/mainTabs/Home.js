@@ -9,7 +9,7 @@ import {
 
 export default class Home extends Component {
     static navigationOptions = {
-        title: '首页'
+        title: '首页',
     };
 
     _gotoContent = () => {

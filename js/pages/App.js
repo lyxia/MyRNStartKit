@@ -4,8 +4,9 @@ import {
     StyleSheet,
     Text,
     BackAndroid,
+    Linking,
 } from 'react-native'
-import { addNavigationHelpers } from 'react-navigation';
+import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { Provider, connect } from 'react-redux'
 
 import { configureStore } from '../stores/configureStore'
@@ -17,6 +18,31 @@ const store = configureStore()
     nav: state.nav,
 }))
 class AppWithNavigationState extends Component {
+    _handleBackPress = () => {
+        let curRoute = null
+        let theLastIndex = null
+        var {routes, index} = this.props.nav
+        while(routes) {
+            theLastIndex = index
+            curRoute = routes[index]
+            routes = curRoute.routes
+            index = curRoute.index
+        }
+        if (theLastIndex) {
+            this.props.dispatch({ type: "Navigation/BACK" })
+            return true
+        } else {
+            return false
+        }
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this._handleBackPress);
+    }
+    componentWillUnmount() {
+        BackAndroid.removeEventListener('hardwareBackPress', this._handleBackPress);
+    }
+
     render() {
         return (
             <AppNavigator navigation={addNavigationHelpers({

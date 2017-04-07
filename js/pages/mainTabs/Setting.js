@@ -10,7 +10,7 @@ import codePush from 'react-native-code-push'
 
 export default class Setting extends Component {
     static navigationOptions = {
-        title: '设置'
+        title: '设置',
     };
 
     _syncUpdata = () => {

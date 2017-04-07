@@ -1,10 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {
     View,
     StyleSheet,
     Text,
     TouchableOpacity,
 } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 
 export default class Login extends Component {
     static navigationOptions = {
@@ -12,8 +13,14 @@ export default class Login extends Component {
     };
 
     _login = () => {
-        const { navigate } = this.props.navigation;
-        navigate('MainTab')
+        const { dispatch } = this.props.navigation;
+        const navigateAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'MainTab' })
+            ]
+        })
+        dispatch(navigateAction)
     }
 
     render() {

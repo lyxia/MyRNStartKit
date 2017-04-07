@@ -13,9 +13,12 @@
     "react-native": "0.42.3",
     "react-native-code-push": "^1.17.3-beta",
     "react-native-custom-components": "^1.0.0",
+    "react-native-custom-keyboard": "^1.0.4",
+    "react-native-keyboard": "^2.0.0",
     "react-navigation": "^1.0.0-beta.7",
     "react-redux": "^5.0.3",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "rnck": "0.0.3"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",

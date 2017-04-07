@@ -6,10 +6,12 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from 'react-native'
+import {NavigationActions} from 'react-navigation'
 
 export default class Content extends Component {
     static navigationOptions = {
-        title: (navigation) => `内容页${navigation.state.params}`
+        title: (navigation) => `内容页${navigation.state.params}`,
+        tabBar: {visible: false}
     };
 
     _next = () => {
@@ -19,6 +21,17 @@ export default class Content extends Component {
         navigate('Content', ++curPage)
     }
 
+    _gotoLogin = () => {
+        const {dispatch} = this.props.navigation
+        const navigateAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ]
+        })
+        dispatch(navigateAction)
+    }
+
     render() {
         const { params } = this.props.navigation.state
         return (
@@ -26,6 +39,9 @@ export default class Content extends Component {
                 <Text>这是第：{`${params}`}个内容页</Text>
                 <TouchableOpacity onPress={this._next}>
                     <Text>点击进入下一个内容页</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this._gotoLogin}>
+                    <Text>跳转到登录页面</Text>
                 </TouchableOpacity>
             </View>
         )
