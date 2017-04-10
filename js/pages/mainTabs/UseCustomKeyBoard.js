@@ -30,11 +30,18 @@ export default class UseCustomKeyBoard extends Component {
         this.setState({ text: text })
     }
 
+    _onChange = ({nativeEvent}) => {
+        let s = nativeEvent.text
+        if(s.length) {
+            console.log(`code = ${s.charCodeAt(s.length-1)}`)
+        }
+    }
+
     render() {
         return (
             <View style={styles.root}>
                 <CustomTextInput ref={this.onRef} style={styles.textInput} customKeyboardType="hello" value={this.state.text} onChangeText={this.onChangeText} />
-                <TextInput style={styles.textInput} defaultValue={'default 1 value'} />
+                <TextInput style={styles.textInput} defaultValue={'default 1 value'} onChange={this._onChange}/>
                 <TextInput style={styles.textInput} defaultValue={'default 2 value'} />
             </View>
         );
