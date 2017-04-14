@@ -13,14 +13,19 @@ export default class Login extends Component {
     };
 
     _login = () => {
-        const { dispatch } = this.props.navigation;
-        const navigateAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'MainTab' })
-            ]
+        this.loginRequest = requestAnimationFrame(()=>{
+            const { dispatch } = this.props.navigation;
+            const navigateAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'MainTab' })
+                ]
+            })
+            dispatch(navigateAction)
         })
-        dispatch(navigateAction)
+    }
+    componentWillUnmount() { 
+        this.loginRequest && cancelAnimationFrame(this.loginRequest)
     }
 
     render() {

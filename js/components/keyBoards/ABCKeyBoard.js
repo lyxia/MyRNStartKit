@@ -1,12 +1,49 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import {
   TouchableOpacity,
   Text,
   View,
+  Image,
 } from 'react-native';
-import * as StyleSheet from '../../utils/MyStyleSheet'
 
-export default class ABCKeyBoard extends Component {
+import * as StyleSheet from '../../utils/MyStyleSheet'
+import DisplayView from '../DisplayView'
+
+class ABCKey extends PureComponent {
+  render() {
+    return (
+      <TouchableOpacity onPress={() => this.props.onKeyPress(this.props.keyValue)}>
+        <View style={[styles.key, { width: this.props.keyWidth }]}>
+          <Text style={styles.keyText}>{this.props.keyValue}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+}
+
+class UPKeyBoard extends PureComponent {
+  render() {
+    console.log('render UPKeyBoard')
+    return (
+      <View>
+        {this.props.rows}
+      </View>
+    )
+  }
+}
+
+class DownKeyBoard extends PureComponent {
+  render() {
+    console.log('render DownKeyBoard')
+    return (
+      <View>
+        {this.props.rows}
+      </View>
+    )
+  }
+}
+
+export default class ABCKeyBoard extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -14,17 +51,23 @@ export default class ABCKeyBoard extends Component {
     this.keyWidth = 0;
   }
 
-  _changeUPOrDown = () => {
-    //大小写转换
-    this.setState({ ...this.state, isUP: !this.state.isUP })
+  componentWillUnmount() {
+    this.changeUpOrDownRequest && cancelAnimationFrame(this.changeUpOrDownRequest)
   }
 
-  _renderUpDown = () => {
+  _changeUPOrDown = () => {
+    //大小写转换
+    this.changeUpOrDownRequest = requestAnimationFrame(() => {
+      this.setState({ ...this.state, isUP: !this.state.isUP })
+    })
+  }
+
+  _renderUpDown = (type) => {
     //绘制大小写转换
     return (
       <TouchableOpacity onPress={this._changeUPOrDown}>
         <View style={[styles.key, styles.otherKey, { width: rowHeight - vSpacing * 2 }]}>
-          <Text>U/D</Text>
+          {type === 'UP' ? <Image source={require('./images/shouzimudaxie.png')}/> : <Image source={require('./images/xiaoxie.png')}/>}
         </View>
       </TouchableOpacity>
     )
@@ -35,7 +78,7 @@ export default class ABCKeyBoard extends Component {
     return (
       <TouchableOpacity onPress={this.props.onDelete}>
         <View style={[styles.key, styles.otherKey, { width: rowHeight - vSpacing * 2 }]}>
-          <Text>Back</Text>
+          <Image source={require('./images/back.png')}/>
         </View>
       </TouchableOpacity>
     )
@@ -46,7 +89,7 @@ export default class ABCKeyBoard extends Component {
     return (
       <TouchableOpacity onPress={() => this.props.changeKeyboard('number')}>
         <View style={[styles.key, styles.otherKey, { width: accessWidth }]}>
-          <Text>123</Text>
+          <Text style={styles.keyText}>123</Text>
         </View>
       </TouchableOpacity>
     )
@@ -57,7 +100,7 @@ export default class ABCKeyBoard extends Component {
     return (
       <TouchableOpacity onPress={() => this.props.changeKeyboard('char')}>
         <View style={[styles.key, styles.otherKey, { width: accessWidth }]}>
-          <Text>#+=</Text>
+          <Text style={styles.keyText}>#+=</Text>
         </View>
       </TouchableOpacity>
     )
@@ -71,27 +114,43 @@ export default class ABCKeyBoard extends Component {
     )
   }
 
-  _renderKey = (key) => {
+  _renderKey = (key, index) => {
     return (
-      <TouchableOpacity onPress={() => this.props.onKeyPress(key)} key={key}>
-        <View style={[styles.key, { width: this.keyWidth }]}>
-          <Text style={styles.keyText}>{key}</Text>
-        </View>
-      </TouchableOpacity>
+      <ABCKey
+        onKeyPress={this.props.onKeyPress}
+        key={index}
+        keyValue={key}
+        keyWidth={this.keyWidth}
+        index={index}
+      />
     )
   }
 
   _renderKeys = (keys, width) => {
     return (
-      <View style={{ width, flexDirection: 'row', justifyContent: 'space-around' }}>
+      <View style={{ width, flexDirection: 'row', justifyContent: 'space-between' }}>
         {keys}
       </View>
     )
   }
 
-  _renderKeyBoard = () => {
-    let curKeys = [] 
-    if (this.state.isUP) {
+  _renderKeyBoard = (type) => {
+    if(type === 'UP') {
+      if(this.upRows === undefined) {
+        this.upRows = this._cacultateRows(type)
+      }
+      return <UPKeyBoard rows={this.upRows}/>
+    } else {
+      if(this.downRows === undefined) {
+        this.downRows = this._cacultateRows(type)
+      }
+      return <DownKeyBoard rows={this.downRows}/>
+    }
+  }
+
+  _cacultateRows = (type) => {
+    let curKeys = []
+    if (type === 'UP') {
       //渲染大写
       curKeys = upKeys
     } else {
@@ -100,9 +159,11 @@ export default class ABCKeyBoard extends Component {
     }
 
     let rows = []
+    let index = 0
     let rowKeys = curKeys.map((rows) => {
       return rows.map((key) => {
-        return this._renderKey(key)
+        index++
+        return this._renderKey(key, index)
       })
     })
 
@@ -123,8 +184,8 @@ export default class ABCKeyBoard extends Component {
     rowWidth = rowKeys[2].length * this.keyWidth + hSpacing * (rowKeys[2].length - 1)
     rows.push(
       <View style={[styles.row, styles.abcRow]} key={3}>
-        <View style={{ justifyContent: 'space-between', width: this.props.width - hSpacing*2, flexDirection: 'row' }}>
-          {this._renderUpDown()}
+        <View style={{ justifyContent: 'space-between', width: this.props.width - hSpacing * 2, flexDirection: 'row' }}>
+          {this._renderUpDown(type)}
           {this._renderKeys(rowKeys[2], rowWidth)}
           {this._renderDel()}
         </View>
@@ -132,10 +193,10 @@ export default class ABCKeyBoard extends Component {
     )
 
     let spaceWidth = rowWidth - (2 * this.keyWidth + 2 * hSpacing)
-    let accessWidth = (this.props.width - hSpacing*4 - spaceWidth) / 2
+    let accessWidth = (this.props.width - hSpacing * 4 - spaceWidth) / 2
     rows.push(
       <View style={[styles.row, styles.abcRow]} key={4}>
-        <View style={{ justifyContent: 'space-between', width: this.props.width - hSpacing*2, flexDirection: 'row' }}>
+        <View style={{ justifyContent: 'space-between', width: this.props.width - hSpacing * 2, flexDirection: 'row' }}>
           {this._renderNumber(accessWidth)}
           {this._renderSpacing(spaceWidth)}
           {this._renderChar(accessWidth)}
@@ -143,15 +204,27 @@ export default class ABCKeyBoard extends Component {
       </View>
     )
 
-    return rows;
+    return rows
   }
 
   render() {
+    console.log('render ABC KeyBoard')
     const width = this.props.width;
     this.keyWidth = (width - (keys[0].length + 1) * hSpacing) / keys[0].length;
     return (
       <View style={styles.keyboard}>
-        {this._renderKeyBoard()}
+        <DisplayView
+          keepAlive={true}
+          enable={this.state.isUP}
+        >
+          {this._renderKeyBoard('UP')}
+        </DisplayView>
+        <DisplayView
+          keepAlive={true}
+          enable={!this.state.isUP}
+        >
+          {this._renderKeyBoard('Down')}
+        </DisplayView>
       </View>
     )
   }
@@ -170,13 +243,8 @@ const upKeys = [
   ['Z', 'X', 'C', 'V', 'B', 'N', 'M']]
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'gray',
-  },
   keyboard: {
-    backgroundColor: '#d2d5dc',
+    backgroundColor: '#d8dbdf',
   },
   row: {
     height: rowHeight,
@@ -193,20 +261,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     ios: {
-        shadowColor: 'gray',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 1,
-        shadowRadius: 1,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 1,
+      shadowRadius: 1,
     },
     android: {
-        borderColor: 'black',
-        borderWidth: StyleSheet.hairlineWidth,
+      borderColor: 'black',
+      borderWidth: StyleSheet.hairlineWidth,
     }
   },
   otherKey: {
-    backgroundColor: 'gray',
+    backgroundColor: '#babdc2',
   },
   keyText: {
-
+    color: 'black',
+    fontSize: 18,
   },
 })

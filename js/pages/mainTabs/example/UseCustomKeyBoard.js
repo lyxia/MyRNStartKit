@@ -11,7 +11,7 @@ import {
 
 } from 'react-native'
 
-import './RNKeyboard'
+import '../../../components/keyBoards/RNKeyboard'
 import { CustomTextInput, install } from 'react-native-custom-keyboard';
 
 export default class UseCustomKeyBoard extends Component {

@@ -7,9 +7,6 @@ import {
     StyleSheet,
 } from 'react-native'
 
-import './RNKeyboard'
-import { CustomTextInput, install } from 'react-native-custom-keyboard';
-
 export default class Example extends Component {
 
     static navigationOptions = {
@@ -21,9 +18,9 @@ export default class Example extends Component {
         navigate('UseCustomKeyBoard')
     }
 
-    _gotoNumberKeyBoard = () => {
+    _gotoPerformanceDemo = () => {
         const {navigate} = this.props.navigation
-        navigate('NumberKeyBoard')
+        navigate('PerformanceTesting')
     }
 
     render() {
@@ -33,8 +30,8 @@ export default class Example extends Component {
                     <TouchableOpacity onPress={this._gotoUseCustomKeyBoard}>
                         <Text>UseCustomKeyBoard</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._gotoNumberKeyBoard}>
-                        <Text>NumberKeyBoard</Text>
+                    <TouchableOpacity onPress={this._gotoPerformanceDemo}>
+                        <Text>PerformanceTesting</Text>
                     </TouchableOpacity>
                 </View>
             </View>

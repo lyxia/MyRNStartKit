@@ -1,0 +1,40 @@
+node_modules目录是React Native框架，可自行下载后复制到项目中，该目录下的jpush-react-native是link文件无权限share，可在node_modules同级使用
+`npm install jpush-react-native --save`
+`rnpm link jpush-react-native`
+自行安装
+
+打包bundle：
+android的dev包：
+react-native bundle --entry-file index.android.js --bundle-output ./android/app/src/main/assets/index.android.bundle --platform android --assets-dest ./android/app/src/main/res/ --dev true
+android的release包：
+react-native bundle --entry-file index.android.js --bundle-output ./android/app/src/main/assets/index.android.bundle --platform android --assets-dest ./android/app/src/main/res/ --dev false
+
+ios的dev包：
+react-native bundle --entry-file index.ios.js --bundle-output ./ios/SP2P_7/Resource/index.ios.jsbundle --platform ios --assets-dest ./ios/SP2P_7/Resource/ --dev true
+ios的release包：
+react-native bundle --entry-file index.ios.js --bundle-output ./ios/SP2P_7/Resource/index.ios.jsbundle --platform ios --assets-dest ./ios/SP2P_7/Resource/ --dev false
+
+发布热更新：
+开发
+code-push release-react HFMoneyIOS ios --deploymentName Staging --description test --development true --plistFile ./ios/SP2P_7/SP2P_7-Info.plist --bundleName index.ios.jsbundle
+发布
+code-push release-react HFMoneyIOS ios --deploymentName Staging --description test --development false --plistFile ./ios/SP2P_7/SP2P_7-Info.plist --bundleName index.ios.jsbundle
+
+
+ios的RN库：
+判断framework支持框架：
+lipo -info /Users/.../xFramework.framework/xFramework
+输出：
+Architectures in the fat file: xsdkFramework are: armv7 arm64 不支持模拟器
+Architectures in the fat file: libUPPayPlugin.a are: armv7  arm64 i386 x86_64 支持真机和模拟器
+framework的合并：
+lipo -create /Users/.../RKPlatform.framework/RKPlatform /Users/.../RKPlatform.framework/RKPlatform -output /Users/.../Desktop/RKPlatform
+前两个是分别支持真机和模拟器的framework的路径 -output后是合并后输出可执行文件的路径
+然后把生成后的可执行文件RKPlatform替换合并前任意一个framework里面的可执行文件RKPlatform就OK了
+
+原生开发：
+ios中rn资源：
+index.ios.jsbundle
+assets
+android中rn资源：
+index.android.bundle

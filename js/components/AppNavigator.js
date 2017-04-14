@@ -6,12 +6,18 @@ import {
 
 //all scenes
 import Login from '../pages/Login'
+
 import Home from '../pages/mainTabs/Home'
-import Setting from '../pages/mainTabs/Setting'
 import Content from '../pages/Content'
-import Example from '../pages/mainTabs/Example'
-import UseCustomKeyBoard from '../pages/mainTabs/UseCustomKeyBoard'
-import NumberKeyBoard from '../pages/mainTabs/NumberKeyBoard'
+
+import Setting from '../pages/mainTabs/Setting'
+
+import Example from '../pages/mainTabs/example/Example'
+import UseCustomKeyBoard from '../pages/mainTabs/example/UseCustomKeyBoard'
+import PerformanceTesting from '../pages/mainTabs/example/performanceTesting/PerformanceTesting'
+import BaseComponentDemo from '../pages/mainTabs/example/performanceTesting/BaseComponentDemo'
+import PureComponentDemo from '../pages/mainTabs/example/performanceTesting/PureComponentDemo'
+import AmountViewDemo from '../pages/mainTabs/example/performanceTesting/AmountViewDemo'
 
 //all navigations
 const HomeNavigation = StackNavigator({
@@ -26,7 +32,10 @@ const SettingNavigation = StackNavigator({
 const ExampleNavigation = StackNavigator({
     Example: {screen: Example},
     UseCustomKeyBoard: {screen: UseCustomKeyBoard},
-    NumberKeyBoard: {screen: NumberKeyBoard},
+    PerformanceTesting: {screen: PerformanceTesting},
+    BaseComponentDemo: {screen: BaseComponentDemo},
+    PureComponentDemo: {screen: PureComponentDemo},
+    AmountViewDemo: {screen: AmountViewDemo},
 })
 
 const MainTab = TabNavigator({

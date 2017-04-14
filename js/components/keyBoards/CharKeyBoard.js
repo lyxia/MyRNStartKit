@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import {
     TouchableOpacity,
     Text,
     View,
+    Image,
 } from 'react-native';
 import * as StyleSheet from '../../utils/MyStyleSheet'
 
-export default class ABCKeyBoard extends Component {
+export default class ABCKeyBoard extends PureComponent {
     constructor(props) {
         super(props)
 
@@ -14,28 +15,12 @@ export default class ABCKeyBoard extends Component {
         this.keyWidth = 0;
     }
 
-    _changeUPOrDown = () => {
-        //大小写转换
-        this.setState({ ...this.state, isUP: !this.state.isUP })
-    }
-
-    _renderUpDown = () => {
-        //绘制大小写转换
-        return (
-            <TouchableOpacity onPress={this._changeUPOrDown}>
-                <View style={[styles.key, styles.otherKey, { width: rowHeight - vSpacing * 2 }]}>
-                    <Text>U/D</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
     _renderDel = () => {
         //绘制删除键
         return (
             <TouchableOpacity onPress={this.props.onDelete}>
                 <View style={[styles.key, styles.otherKey, { width: rowHeight - vSpacing * 2, marginLeft: hSpacing }]}>
-                    <Text>Back</Text>
+                    <Image source={require('./images/back.png')}/>
                 </View>
             </TouchableOpacity>
         )
@@ -46,7 +31,7 @@ export default class ABCKeyBoard extends Component {
         return (
             <TouchableOpacity onPress={() => this.props.changeKeyboard('number')}>
                 <View style={[styles.key, styles.otherKey, { width: accessWidth }]}>
-                    <Text>123</Text>
+                    <Text style={styles.keyText}>123</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -57,7 +42,7 @@ export default class ABCKeyBoard extends Component {
         return (
             <TouchableOpacity onPress={() => this.props.changeKeyboard('ABC')}>
                 <View style={[styles.key, styles.otherKey, { width: accessWidth }]}>
-                    <Text>ABC</Text>
+                    <Text style={styles.keyText}>ABC</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -75,7 +60,7 @@ export default class ABCKeyBoard extends Component {
 
     _renderKeys = (keys, width) => {
         return (
-            <View style={{ width, flexDirection: 'row', justifyContent: 'space-around' }}>
+            <View style={{ width, flexDirection: 'row', justifyContent: 'space-between' }}>
                 {keys}
             </View>
         )
@@ -128,6 +113,7 @@ export default class ABCKeyBoard extends Component {
     }
 
     render() {
+        console.log('render Char KeyBoard')
         const width = this.props.width;
         this.keyWidth = (width - (keys[0].length + 1) * hSpacing) / keys[0].length;
         return (
@@ -149,13 +135,8 @@ const keys = [
 ]
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: 'gray',
-    },
     keyboard: {
-        backgroundColor: '#d2d5dc',
+        backgroundColor: '#d8dbdf',
     },
     row: {
         height: rowHeight,
@@ -183,9 +164,10 @@ const styles = StyleSheet.create({
         }
     },
     otherKey: {
-        backgroundColor: 'gray',
+        backgroundColor: '#babdc2',
     },
     keyText: {
-
-    },
+        color: 'black',
+        fontSize: 18,
+    }
 })
