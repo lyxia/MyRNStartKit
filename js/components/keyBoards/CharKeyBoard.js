@@ -6,8 +6,9 @@ import {
     Image,
 } from 'react-native';
 import * as StyleSheet from '../../utils/MyStyleSheet'
+import KeysRow from './KeysRow'
 
-export default class ABCKeyBoard extends PureComponent {
+export default class CharKeyBoard extends PureComponent {
     constructor(props) {
         super(props)
 
@@ -18,7 +19,7 @@ export default class ABCKeyBoard extends PureComponent {
     _renderDel = () => {
         //绘制删除键
         return (
-            <TouchableOpacity onPress={this.props.onDelete}>
+            <TouchableOpacity onPress={this.props.onDelete} onLongPress={this.props.onClearAll}>
                 <View style={[styles.key, styles.otherKey, { width: rowHeight - vSpacing * 2, marginLeft: hSpacing }]}>
                     <Image source={require('./images/back.png')}/>
                 </View>
@@ -48,21 +49,15 @@ export default class ABCKeyBoard extends PureComponent {
         )
     }
 
-    _renderKey = (key) => {
-        return (
-            <TouchableOpacity onPress={() => this.props.onKeyPress(String.fromCharCode(key))} key={key}>
-                <View style={[styles.key, { width: this.keyWidth }]}>
-                    <Text style={styles.keyText}>{String.fromCharCode(key)}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
     _renderKeys = (keys, width) => {
         return (
-            <View style={{ width, flexDirection: 'row', justifyContent: 'space-between' }}>
-                {keys}
-            </View>
+            <KeysRow
+                keys={keys}
+                width={width}
+                keyWidth={this.keyWidth}
+                onKeyPress={this.props.onKeyPress}
+                showTip = {this.props.showTip}
+            />
         )
     }
 
@@ -70,7 +65,7 @@ export default class ABCKeyBoard extends PureComponent {
         let rows = []
         let rowKeys = keys.map((rows) => {
             return rows.map((key) => {
-                return this._renderKey(key)
+                return String.fromCharCode(key)
             })
         })
 
@@ -113,7 +108,6 @@ export default class ABCKeyBoard extends PureComponent {
     }
 
     render() {
-        console.log('render Char KeyBoard')
         const width = this.props.width;
         this.keyWidth = (width - (keys[0].length + 1) * hSpacing) / keys[0].length;
         return (

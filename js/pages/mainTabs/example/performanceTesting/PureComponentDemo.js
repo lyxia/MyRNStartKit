@@ -90,7 +90,7 @@ _renderBlock = (borderColor, text, style) => {
 export default class App extends PureComponent {
     static navigationOptions = {
         title: '使用PureComponent',
-        tabBar: { visible: false }
+        tabBarVisible: false,
     };
 
     constructor(props) {

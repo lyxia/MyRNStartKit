@@ -5,24 +5,34 @@ import {
   View,
   Image,
   StyleSheet,
+  TextInput,
+  Platform,
+  findNodeHandle,
 } from 'react-native';
 
-import { register, insertText, doDelete, backSpace, clearFocus } from 'react-native-custom-keyboard';
+import { register, insertText, doDelete, backSpace } from 'react-native-custom-keyboard';
 //数字键盘
 import NumberKeyBoard from './NumberKeyBoard';
 //ABC键盘
 import ABCKeyBoard from './ABCKeyBoard'
 //符号键盘
 import CharKeyBoard from './CharKeyBoard'
+//提示
+import KeyTip from './KeyTip'
 
 import DisplayView from '../DisplayView'
 
-class MyKeyboard extends Component {
+function clearFocus(tag) {
+  TextInput.State.blurTextInput(tag)
+}
+
+export default class MyKeyboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
       curKeyBoard: 'number',
       width: 0,
+      showTip: {isShow:false, layout:{x:0,y:0,width:0,height:0}, keyValue:""}
     }
   }
 
@@ -78,6 +88,19 @@ class MyKeyboard extends Component {
     )
   }
 
+//{isShow, ref, keyValue}
+  _showTip = (showTipData) => {
+    if(showTipData.isShow) {
+      showTipData.ref.measureLayout(findNodeHandle(this.refs.keyboard), (left, top, width, height) => {
+          console.log(`key: ${showTipData.keyValue} left:${left} top:${top} width:${width} height:${height}`)
+          //{isShow:false, layout:{x:0,y:0,width:0,height:0}, keyValue:""}
+          this.setState({...this.state, showTip:{...showTipData, layout:{x:left, y:top, width, height}}})
+      })
+    } else {
+      this.setState({...this.state, showTip:showTipData})
+    }
+  }
+
   _renderABCKeyBoard = (width) => {
     return (
       <DisplayView
@@ -89,6 +112,8 @@ class MyKeyboard extends Component {
           changeKeyboard={this._handleChangeKeyboard}
           onKeyPress={this._handleKeyPress}
           onDelete={this._handleDelete}
+          onClearAll={this._handlerClearAll}
+          showTip={this._showTip}
         />
       </DisplayView>
     )
@@ -105,31 +130,49 @@ class MyKeyboard extends Component {
           changeKeyboard={this._handleChangeKeyboard}
           onKeyPress={this._handleKeyPress}
           onDelete={this._handleDelete}
+          onClearAll={this._handlerClearAll}
+          showTip={this._showTip}
         />
       </DisplayView>
     )
   }
 
+  _renderTip = () => {
+    const {isShow, layout, keyValue} = this.state.showTip
+    return isShow ? 
+          (
+            <KeyTip
+              layout = {layout}
+              keyValue = {keyValue}
+            />
+          )
+          :
+          null
+  }
+
   _onLayout = ({ nativeEvent }) => {
     const width = nativeEvent.layout.width
-    const height = nativeEvent.layout.height
+    let height = nativeEvent.layout.height
+    console.log(`width: ${width} height: ${height}`)
+    if(Platform.OS === "android") {
+      height = height - 54
+    }
     if (width > 0 && width !== this.state.width && height === 252) {
       this.setState({ ...this.state, width })
     }
   }
 
   render() {
-    console.log('render RNKeyboard')
     return (
-      <View onLayout={this._onLayout} style={styles.container}>
+      <View onLayout={this._onLayout} style={styles.container} ref="keyboard" pointerEvents="box-none">
         {
           this.state.width > 0 ?
             (
-              <View>
+              <View style={[styles.keyBoard, {height:252}]} key="keyboard">
                 <View style={styles.top}>
                   <View style={styles.topLeft}>
                     <Image source={require('./images/anquanbaohu.png')}/>
-                    <Text style={styles.topDesText}>合富金融安全键盘</Text>
+                    <Text style={styles.topDesText}>安全键盘</Text>
                   </View>
                   <TouchableOpacity onPress={this._clearFocus}>
                     <Text style={styles.topCompleteText}>完成</Text>
@@ -143,6 +186,7 @@ class MyKeyboard extends Component {
             :
             null
         }
+        {this._renderTip()}
       </View>
     );
   }
@@ -153,6 +197,10 @@ register('hello', () => MyKeyboard)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
+  },
+  keyBoard: {
     backgroundColor: '#f6f5f2',
   },
   top: {

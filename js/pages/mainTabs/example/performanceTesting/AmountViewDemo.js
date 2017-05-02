@@ -12,7 +12,7 @@ export default class Example extends Component {
 
     static navigationOptions = {
         title: '大量视图渲染',
-        tabBar: { visible: false }
+        tabBarVisible: false,
     };
 
     constructor(props) {

@@ -11,7 +11,7 @@ export default class Example extends Component {
 
     static navigationOptions = {
         title: '性能测试',
-        tabBar: { visible: false }
+        tabBarVisible: false,
     };
 
     _gotoBase = () => {

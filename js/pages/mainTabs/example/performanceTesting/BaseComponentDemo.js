@@ -166,7 +166,7 @@ _renderBlock = (borderColor, text, style) => {
 export default class App extends BaseComponent {
     static navigationOptions = {
         title: '基础实现',
-        tabBar: { visible: false }
+        tabBarVisible: false,
     };
 
     constructor(props) {

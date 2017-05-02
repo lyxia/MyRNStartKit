@@ -34,7 +34,9 @@ class Keyboard extends PureComponent {
     }
 
     _clearAll() {
-        this.props.onClear();
+        InteractionManager.runAfterInteractions(()=>{ 
+            this.props.onClearAll();
+        })
     }
 
     _onPress(key) {
@@ -47,7 +49,7 @@ class Keyboard extends PureComponent {
                 this.props.onDelete();
 
             // number key
-            } else {
+            } else if (key !== '') {
                 this.props.onKeyPress(key);
             }
         })
@@ -145,7 +147,6 @@ class Keyboard extends PureComponent {
 
     render() {
         const props = this.props;
-        console.log('render Number Keyboard')
         return (
             <View style={styles.wrapper}>
                 <View style={styles.main}>

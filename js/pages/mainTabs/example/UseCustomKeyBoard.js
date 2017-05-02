@@ -18,7 +18,7 @@ export default class UseCustomKeyBoard extends Component {
 
     static navigationOptions = {
         title: '使用自定义键盘',
-        tabBar: { visible: false }
+        tabBarVisible: false
     };
 
     constructor(props) {

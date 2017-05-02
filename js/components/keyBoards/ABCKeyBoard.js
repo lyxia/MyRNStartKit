@@ -8,22 +8,10 @@ import {
 
 import * as StyleSheet from '../../utils/MyStyleSheet'
 import DisplayView from '../DisplayView'
-
-class ABCKey extends PureComponent {
-  render() {
-    return (
-      <TouchableOpacity onPress={() => this.props.onKeyPress(this.props.keyValue)}>
-        <View style={[styles.key, { width: this.props.keyWidth }]}>
-          <Text style={styles.keyText}>{this.props.keyValue}</Text>
-        </View>
-      </TouchableOpacity>
-    )
-  }
-}
+import KeysRow from './KeysRow'
 
 class UPKeyBoard extends PureComponent {
   render() {
-    console.log('render UPKeyBoard')
     return (
       <View>
         {this.props.rows}
@@ -34,7 +22,6 @@ class UPKeyBoard extends PureComponent {
 
 class DownKeyBoard extends PureComponent {
   render() {
-    console.log('render DownKeyBoard')
     return (
       <View>
         {this.props.rows}
@@ -76,7 +63,7 @@ export default class ABCKeyBoard extends PureComponent {
   _renderDel = () => {
     //绘制删除键
     return (
-      <TouchableOpacity onPress={this.props.onDelete}>
+      <TouchableOpacity onPress={this.props.onDelete} onLongPress={this.props.onClearAll}>
         <View style={[styles.key, styles.otherKey, { width: rowHeight - vSpacing * 2 }]}>
           <Image source={require('./images/back.png')}/>
         </View>
@@ -107,6 +94,7 @@ export default class ABCKeyBoard extends PureComponent {
   }
 
   _renderSpacing = (spaceWidth) => {
+    //绘制空格键
     return (
       <TouchableOpacity onPress={() => this.props.onKeyPress(' ')}>
         <View style={[styles.key, { width: spaceWidth }]} />
@@ -114,23 +102,15 @@ export default class ABCKeyBoard extends PureComponent {
     )
   }
 
-  _renderKey = (key, index) => {
-    return (
-      <ABCKey
-        onKeyPress={this.props.onKeyPress}
-        key={index}
-        keyValue={key}
-        keyWidth={this.keyWidth}
-        index={index}
-      />
-    )
-  }
-
   _renderKeys = (keys, width) => {
     return (
-      <View style={{ width, flexDirection: 'row', justifyContent: 'space-between' }}>
-        {keys}
-      </View>
+      <KeysRow
+        keys={keys}
+        width={width}
+        keyWidth={this.keyWidth}
+        onKeyPress={this.props.onKeyPress}
+        showTip = {this.props.showTip}
+      />
     )
   }
 
@@ -159,34 +139,27 @@ export default class ABCKeyBoard extends PureComponent {
     }
 
     let rows = []
-    let index = 0
-    let rowKeys = curKeys.map((rows) => {
-      return rows.map((key) => {
-        index++
-        return this._renderKey(key, index)
-      })
-    })
 
-    let rowWidth = rowKeys[0].length * this.keyWidth + hSpacing * (rowKeys[0].length - 1)
+    let rowWidth = curKeys[0].length * this.keyWidth + hSpacing * (curKeys[0].length - 1)
     rows.push(
       <View style={[styles.row, styles.abcRow]} key={1}>
-        {this._renderKeys(rowKeys[0], rowWidth)}
+        {this._renderKeys(curKeys[0], rowWidth)}
       </View >
     )
 
-    rowWidth = rowKeys[1].length * this.keyWidth + hSpacing * (rowKeys[1].length - 1)
+    rowWidth = curKeys[1].length * this.keyWidth + hSpacing * (curKeys[1].length - 1)
     rows.push(
       <View style={[styles.row, styles.abcRow]} key={2}>
-        {this._renderKeys(rowKeys[1], rowWidth)}
+        {this._renderKeys(curKeys[1], rowWidth)}
       </View >
     )
 
-    rowWidth = rowKeys[2].length * this.keyWidth + hSpacing * (rowKeys[2].length - 1)
+    rowWidth = curKeys[2].length * this.keyWidth + hSpacing * (curKeys[2].length - 1)
     rows.push(
       <View style={[styles.row, styles.abcRow]} key={3}>
         <View style={{ justifyContent: 'space-between', width: this.props.width - hSpacing * 2, flexDirection: 'row' }}>
           {this._renderUpDown(type)}
-          {this._renderKeys(rowKeys[2], rowWidth)}
+          {this._renderKeys(curKeys[2], rowWidth)}
           {this._renderDel()}
         </View>
       </View >
@@ -208,7 +181,7 @@ export default class ABCKeyBoard extends PureComponent {
   }
 
   render() {
-    console.log('render ABC KeyBoard')
+    console.log('render ABCKeyboard')
     const width = this.props.width;
     this.keyWidth = (width - (keys[0].length + 1) * hSpacing) / keys[0].length;
     return (

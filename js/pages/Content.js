@@ -9,10 +9,10 @@ import {
 import {NavigationActions} from 'react-navigation'
 
 export default class Content extends Component {
-    static navigationOptions = {
-        title: (navigation) => `内容页${navigation.state.params}`,
-        tabBar: {visible: false}
-    };
+    static navigationOptions = ({navigation}) => ({
+        title: `内容页${navigation.state.params}`,
+        tabBarVisible: false,
+    });
 
     _next = () => {
         const {navigate} = this.props.navigation
