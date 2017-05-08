@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 
 import SafeKeyboard from '../../../js/components/keyBoards/RNKeyboard'
-import {CustomTextInput} from 'react-native-custom-keyboard'
+import {CustomTextInput} from '../../../js/components/keyBoards/customKeyboard'
 
 export default class KeyBoard extends Component {
     render() {

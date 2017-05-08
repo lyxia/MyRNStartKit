@@ -4,12 +4,12 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.horcrux.svg.SvgPackage;
-import cn.reactnative.customkeyboard.RNCustomKeyboardPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.myproject.rn.RNCustomKeyboardPackage;
 
 import java.util.Arrays;
 import java.util.List;

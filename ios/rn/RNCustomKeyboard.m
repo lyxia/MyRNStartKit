@@ -1,7 +1,7 @@
 
 #import "RNCustomKeyboard.h"
-#import "RCTBridge+Private.h"
-#import "RCTUIManager.h"
+#import <React/RCTBridge+Private.h>
+#import <React/RCTUIManager.h>
 
 @implementation RNCustomKeyboard
 
@@ -21,6 +21,9 @@ RCT_EXPORT_METHOD(install:(nonnull NSNumber *)reactTag withType:(nonnull NSStrin
       @"type": keyboardType
     }
   ];
+  
+  inputView.autoresizingMask = UIViewAutoresizingNone;
+  inputView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 252);
 
   UITextView *view = (UITextView*)[_bridge.uiManager viewForReactTag:reactTag];
 
@@ -69,7 +72,7 @@ RCT_EXPORT_METHOD(moveLeft:(nonnull NSNumber *)reactTag) {
   UITextPosition* position = range.start;
 
   if ([view comparePosition:range.start toPosition:range.end] == 0) {
-    position = [view positionFromPosition: position, offset: -1];
+    position = [view positionFromPosition: position offset: -1];
   }
 
   view.selectedTextRange = [view textRangeFromPosition: position toPosition:position];
@@ -82,7 +85,7 @@ RCT_EXPORT_METHOD(moveRight:(nonnull NSNumber *)reactTag) {
   UITextPosition* position = range.end;
 
   if ([view comparePosition:range.start toPosition:range.end] == 0) {
-    position = [view positionFromPosition: position, offset: 1];
+    position = [view positionFromPosition: position offset: 1];
   }
 
   view.selectedTextRange = [view textRangeFromPosition: position toPosition:position];
@@ -94,6 +97,16 @@ RCT_EXPORT_METHOD(switchSystemKeyboard:(nonnull NSNumber*) reactTag) {
   view.inputView = nil;
   [view reloadInputViews];
   view.inputView = inputView;
+}
+
+RCT_EXPORT_METHOD(clearAll:(nonnull NSNumber *)reactTag){
+    UITextView *view = [_bridge.uiManager viewForReactTag:reactTag];
+
+    UITextRange* range = view.selectedTextRange;
+    if(range.end > 0) {
+        range = [view textRangeFromPosition:0 toPosition:range.end];
+        [view replaceRange:range withText:@""];
+    }
 }
 
 @end

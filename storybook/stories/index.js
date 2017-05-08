@@ -6,7 +6,8 @@ import Button from './Button';
 import CenterView from './CenterView';
 import Welcome from './Welcome';
 import Keyboard from './KeyBoard'
-import {Triangle} from './Shape'
+import Shape from './Shape'
+import ListRefresh from './Lyxia/ListRefresh'
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
@@ -28,12 +29,13 @@ storiesOf('Button', module)
     </Button>
   ));
 
-storiesOf('Keyboard', module)
-  .add('with Keyboard', ()=>(
+storiesOf('lyxia', module)
+  .add('customKeyboard', () => (
     <Keyboard/>
-  ));
-
-storiesOf('Overflow', module)
-  .add('with visible', ()=>(
-    <Triangle/>
+  ))
+  .add('shape', () => (
+    <Shape/>
+  ))
+  .add('ListRefresh', () => (
+    <ListRefresh/>
   ))

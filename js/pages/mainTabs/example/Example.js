@@ -23,6 +23,11 @@ export default class Example extends Component {
         navigate('PerformanceTesting')
     }
 
+    _gotoListRefresh = () => {
+        const {navigate} = this.props.navigation
+        navigate('ListRefresh')
+    }
+
     render() {
         return (
             <View style={styles.root}>
@@ -32,6 +37,9 @@ export default class Example extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this._gotoPerformanceDemo}>
                         <Text>PerformanceTesting</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._gotoListRefresh}>
+                        <Text>ListRefreshTesting</Text>
                     </TouchableOpacity>
                 </View>
             </View>

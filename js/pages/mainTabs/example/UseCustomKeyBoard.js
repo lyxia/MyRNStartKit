@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 
 import '../../../components/keyBoards/RNKeyboard'
-import { CustomTextInput, install } from 'react-native-custom-keyboard';
+import { CustomTextInput } from '../../../components/keyBoards/customKeyboard';
 
 export default class UseCustomKeyBoard extends Component {
 

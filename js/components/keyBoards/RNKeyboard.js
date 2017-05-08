@@ -10,7 +10,7 @@ import {
   findNodeHandle,
 } from 'react-native';
 
-import { register, insertText, doDelete, backSpace } from 'react-native-custom-keyboard';
+import { register, insertText, doDelete, backSpace, clearAll, clearFocus } from './customKeyboard';
 //数字键盘
 import NumberKeyBoard from './NumberKeyBoard';
 //ABC键盘
@@ -21,10 +21,6 @@ import CharKeyBoard from './CharKeyBoard'
 import KeyTip from './KeyTip'
 
 import DisplayView from '../DisplayView'
-
-function clearFocus(tag) {
-  TextInput.State.blurTextInput(tag)
-}
 
 export default class MyKeyboard extends Component {
   constructor(props) {
@@ -64,11 +60,18 @@ export default class MyKeyboard extends Component {
     })
   }
 
+  _handlerClearAll = () => {
+    this.clearAllRequest = requestAnimationFrame(() => {
+      clearAll(this.props.tag)
+    })
+  }
+
   componentWillUnmount() {
     this.clearFocusRequest && cancelAnimationFrame(this.clearFocusRequest)
     this.chageKeyboardRequest && cancelAnimationFrame(this.chageKeyboardRequest)
     this.insertTextRequest && cancelAnimationFrame(this.insertTextRequest)
     this.backSpaceRequest && cancelAnimationFrame(this.backSpaceRequest)
+    this.clearAllRequest && cancelAnimationFrame(this.clearAllRequest)
   }
 
   _renderNumberKeyBoard = (width) => {
@@ -78,11 +81,12 @@ export default class MyKeyboard extends Component {
         enable={this.state.curKeyBoard === 'number'}
       >
         <NumberKeyBoard
-          keyboardType="decimal-pad"
+          keyboardType={this.state.isLock ? "number-pad" : "decimal-pad"}
           onDelete={this._handleDelete}
           onKeyPress={this._handleKeyPress}
           onChangeABC={this._handerChangeABC}
           disableOtherText={true}
+          onClearAll={this._handlerClearAll}
         />
       </DisplayView>
     )

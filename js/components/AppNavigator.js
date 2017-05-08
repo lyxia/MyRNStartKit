@@ -15,6 +15,7 @@ import Setting from '../pages/mainTabs/Setting'
 import Example from '../pages/mainTabs/example/Example'
 import UseCustomKeyBoard from '../pages/mainTabs/example/UseCustomKeyBoard'
 import PerformanceTesting from '../pages/mainTabs/example/performanceTesting/PerformanceTesting'
+import ListRefresh from '../pages/mainTabs/example/ListRefresh'
 import BaseComponentDemo from '../pages/mainTabs/example/performanceTesting/BaseComponentDemo'
 import PureComponentDemo from '../pages/mainTabs/example/performanceTesting/PureComponentDemo'
 import AmountViewDemo from '../pages/mainTabs/example/performanceTesting/AmountViewDemo'
@@ -33,6 +34,7 @@ const ExampleNavigation = StackNavigator({
     Example: {screen: Example},
     UseCustomKeyBoard: {screen: UseCustomKeyBoard},
     PerformanceTesting: {screen: PerformanceTesting},
+    ListRefresh: {screen: ListRefresh},
     BaseComponentDemo: {screen: BaseComponentDemo},
     PureComponentDemo: {screen: PureComponentDemo},
     AmountViewDemo: {screen: AmountViewDemo},

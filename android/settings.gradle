@@ -1,8 +1,6 @@
 rootProject.name = 'MyProject'
 include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
-include ':react-native-custom-keyboard'
-project(':react-native-custom-keyboard').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-custom-keyboard/android')
 include ':react-native-code-push'
 project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
 
