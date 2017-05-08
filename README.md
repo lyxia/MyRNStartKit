@@ -5,6 +5,7 @@
 - react-navigation
 - redux
 - mobx
+- 自定义键盘
 
 **待集成：**
 - 极光推送
